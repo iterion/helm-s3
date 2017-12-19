@@ -29,7 +29,7 @@ func ParseConfig(profile string) error {
 	}
 
 	sectionName := "default"
-	if profile != "" {
+	if profile != "" && profile != "default" {
 		sectionName = fmt.Sprintf("profile %s", profile)
 	}
 
