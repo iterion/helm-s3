@@ -18,9 +18,10 @@ var (
 func Session() (*session.Session, error) {
 	return session.NewSessionWithOptions(session.Options{
 		Config: aws.Config{
-			DisableSSL:       aws.Bool(awsDisableSSL == "true"),
-			S3ForcePathStyle: aws.Bool(true),
-			Endpoint:         aws.String(awsEndpoint),
+			DisableSSL:                    aws.Bool(awsDisableSSL == "true"),
+			S3ForcePathStyle:              aws.Bool(true),
+			Endpoint:                      aws.String(awsEndpoint),
+			CredentialsChainVerboseErrors: aws.Bool(true),
 		},
 		SharedConfigState:       session.SharedConfigEnable,
 		AssumeRoleTokenProvider: stscreds.StdinTokenProvider,
