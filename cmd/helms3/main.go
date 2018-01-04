@@ -62,6 +62,7 @@ func main() {
 		cli.Usage(os.Args[1:])
 		os.Exit(0)
 	}
+	fmt.Print("This is our helm-s3")
 
 	switch action {
 	case actionVersion:
