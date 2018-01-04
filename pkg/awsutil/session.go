@@ -3,6 +3,7 @@ package awsutil
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
+	"github.com/aws/aws-sdk-go/aws/defaults"
 	"github.com/aws/aws-sdk-go/aws/session"
 )
 
@@ -16,13 +17,14 @@ var (
 
 // Session returns an AWS session as described http://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html
 func Session() (*session.Session, error) {
+	cfg := aws.Config{
+		DisableSSL:       aws.Bool(awsDisableSSL == "true"),
+		S3ForcePathStyle: aws.Bool(true),
+		Endpoint:         aws.String(awsEndpoint),
+	}
+	cfg.Credentials = defaults.CredChain(&cfg, defaults.Handlers())
 	return session.NewSessionWithOptions(session.Options{
-		Config: aws.Config{
-			DisableSSL:                    aws.Bool(awsDisableSSL == "true"),
-			S3ForcePathStyle:              aws.Bool(true),
-			Endpoint:                      aws.String(awsEndpoint),
-			CredentialsChainVerboseErrors: aws.Bool(true),
-		},
+		Config:                  cfg,
 		SharedConfigState:       session.SharedConfigEnable,
 		AssumeRoleTokenProvider: stscreds.StdinTokenProvider,
 	})
